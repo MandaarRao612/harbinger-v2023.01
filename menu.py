@@ -1,4 +1,5 @@
-import scanner
+from scanner import runZap
+#import scanner
 import os
 import subprocess
 
@@ -15,7 +16,9 @@ def webscanpart():
 
     ##### PASSING ATTACK URL TO MAIN CODE #####
 
-    webscanner.target = attacksite
+    target = attacksite
+    useScanPolicy = None
+    ascanIds = []
 
     ###### SCAN POLICY ######
 
@@ -24,14 +27,14 @@ def webscanpart():
 
     print("\n1. SELECT ATTACKS")
     print("\n2. PERFORM ALL ATTACKS (takes time)")
-    scanpolicy = input("[*] Enter your choice (1 or 2) : ")
+    scanpolicy = int(input("[*] Enter your choice (1 or 2) : "))
 
     if scanpolicy == 1:
-        webscanner.useScanPolicy = True
+        useScanPolicy = True
 
         ###### OPEN ATTACK ID LIST ######
 
-        os.startfile('attacks in zap.xlsx')
+        #os.startfile('attacks in zap.xlsx')
 
         ###### TAKE ATTACK IDs FROM USER ######
 
@@ -42,10 +45,10 @@ def webscanpart():
             num_list.append(num)
         print("\n\nYou have selected the following attack IDs:", num_list)
 
-        webscanner.ascanIds = num_list
+        ascanIds = num_list
 
     elif scanpolicy == 2:
-        webscanner.useScanPolicy = False
+        useScanPolicy = False
 
     else:
         print("\nInvalid Choice")
@@ -58,16 +61,17 @@ def webscanpart():
     strength = int(input("\n Enter your choice (1,2,3) : "))
 
     if strength == 1:
-        webscanner.attackStrength = 'Low'
+        attackStrength = 'Low'
     elif strength == 2:
-        webscanner.attackStrength = 'Medium'
+        attackStrength = 'Medium'
     elif strength == 3:
-        webscanner.attackStrength = 'High'
+        attackStrength = 'High'
     else:
         print("Invalid Choice")
 
-
-subprocess.call(['python', 'webscanner.py'])
+###### CALL MAIN API ######
+    runZap(target, useScanPolicy, ascanIds, attackStrength)
+#subprocess.call(['python', 'webscanner.py'])
 
 
 
